@@ -1,0 +1,20 @@
+name: firstworkflow
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  docker_build_job:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Build the Docker image
+        run: docker build -f TP2/dockerConfig.dockerfile -t weather-app2 TP2
+
+      - name: Run Docker Container
+        run: docker run -e LAT=-22.82 -e LON=-47.22 weather-app2
