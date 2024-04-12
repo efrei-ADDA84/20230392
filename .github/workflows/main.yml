@@ -11,7 +11,7 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       
       - name: Build the Docker image
         run: docker build -f TP2/dockerConfig.dockerfile -t weather-app2 TP2
