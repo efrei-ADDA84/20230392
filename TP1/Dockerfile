@@ -1,4 +1,4 @@
-FROM python:3.8
+FROM python:3.12-slim
 
 # Setting working dir
 WORKDIR /TP1code

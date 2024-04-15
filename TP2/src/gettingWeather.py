@@ -1,26 +1,39 @@
+from flask import Flask, request, jsonify
 import requests
-import json
 import os
+import logging
 
-def gettingWeather(lat, lon):
+# Configure logging
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
-    APIKEY_openweather = '048a8f361dd3ae83d166d41cd7767b74'
+appWeather = Flask(__name__)
+
+@appWeather.route('/gettingWeather', methods=['GET'])
+def gettingWeather():
+    APIKEY_openweather = request.args.get('API_KEY')
+    lat = request.args.get('lat')
+    lon = request.args.get('lon')
+
+    # Logging the request details
+    logging.info(f"The weather for lat = {lat}, lon = {lon}, and API key = {APIKEY_openweather} is requested.")
+
+    if not (lat and lon):
+        logging.error("Missing latitude or longitude in the request.")
+        return jsonify({"error": "Missing latitude or longitude"}), 400
+
     full_url = f"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={APIKEY_openweather}"
+    response = requests.get(full_url)
 
-
-    #with io.StringIO() as f:
-    r = requests.get(full_url)
-
-    data = json.loads(r.content.decode('utf-8'))
-    
-    return data['weather'][0]
+    if response.status_code == 200:
+        data = response.json()
+        weather = data.get('weather', [{}])[0]
+        # Logging the successful retrieval of weather
+        logging.info(f"Weather data retrieved: {weather}")
+        return jsonify(weather)
+    else:
+        # Logging the error with fetching weather data
+        logging.error(f"Failed to fetch weather data, status code {response.status_code}.")
+        return jsonify({"error": "Failed to fetch weather data"}), response.status_code
 
 if __name__ == "__main__":
-
-    lat = os.getenv('lat', default = 0)
-    lon = os.getenv('lon', default = 0)
-
-    weather = gettingWeather(lat, lon)
-
-    print('The weather for lat = ', lat, ' and lon = ', lon, ' is : ')
-    print(json.dumps(weather, indent = 4))
+    appWeather.run(debug=True)
