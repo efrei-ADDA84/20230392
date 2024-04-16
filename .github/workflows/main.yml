@@ -1,4 +1,4 @@
-name: Build and Push Docker Image
+name: CI / CD Pipeline
 
 on:
   push:
@@ -37,3 +37,28 @@ jobs:
           key: ${{ runner.os }}-buildx-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-buildx-
+
+  testing_api-response:
+    needs: build_and_push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Out Repo
+        uses: actions/checkout@v3
+
+      - name: Set Up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12-alpine'
+
+      - name: Install Dependencies
+        run: |
+          cd TP2
+          pip install -r requirements.txt
+
+
+      - name: Run Tests
+        run: |
+          cd TP2/tests
+          python -m unittest test_app.py
+
+    
