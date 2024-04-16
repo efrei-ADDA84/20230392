@@ -27,6 +27,8 @@ jobs:
         with:
           push: true
           tags: jaoox/weather-app-tp2:latest
+          context: ./TP2  
+          file: ./TP2/Dockerfile
 
       - name: Cache Docker layers
         uses: actions/cache@v2
