@@ -3,10 +3,10 @@ import sys
 import unittest
 from flask_testing import TestCase
 
-# Add the src directory to sys.path to find the appWeather module
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'TP2', 'src')))
+# Set the path to include the 'src' folder where 'gettingWeather.py' is located
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src')))
 
-from gettingWeather import appWeather
+from gettingWeather import appWeather  # Import the Flask app
 
 class TestWeatherApp(TestCase):
     def create_app(self):

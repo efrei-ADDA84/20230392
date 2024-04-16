@@ -58,7 +58,6 @@ jobs:
 
       - name: Run Tests
         run: |
-          cd TP2/tests
-          python -m unittest test_app.TestWeatherApp
+          python -m unittest TP2.tests.test_app.TestWeatherApp
 
     
