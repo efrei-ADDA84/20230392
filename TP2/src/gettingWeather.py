@@ -36,4 +36,4 @@ def gettingWeather():
         return jsonify({"error": "Failed to fetch weather data"}), response.status_code
 
 if __name__ == "__main__":
-    appWeather.run(debug=True)
+    appWeather.run(host='0.0.0.0', port=5000, debug=True)
