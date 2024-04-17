@@ -17,6 +17,7 @@ def gettingWeather():
     # Logging the request details
     logging.info(f"The weather for lat = {lat}, lon = {lon}, and API key = {APIKEY_openweather} is requested.")
 
+
     if not (lat and lon):
         logging.error("Missing latitude or longitude in the request.")
         return jsonify({"error": "Missing latitude or longitude"}), 400
