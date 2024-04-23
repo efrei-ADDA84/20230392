@@ -23,8 +23,9 @@ jobs:
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
 
-      - name: Lowercase repo owner
-        run: echo "REPO_OWNER=${{ github.repository_owner }} | tr 'A-Z' 'a-z'" >> $GITHUB_ENV
+      - name: Convert repo owner to lowercase
+        id: repo_owner
+        run: echo "REPO_OWNER=$(echo ${{ github.repository_owner }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
 
       - name: Build and Push the Docker image to ACR
         uses: docker/build-push-action@v2

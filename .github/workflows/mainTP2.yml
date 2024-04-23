@@ -1,9 +1,9 @@
-name: CI / CD Pipeline
+name: CI / CD Pipeline TP2
 
 on:
-  push:
-    branches:
-      - main
+#  push:
+#    branches:
+#      - main
   workflow_dispatch:
 
 jobs:
