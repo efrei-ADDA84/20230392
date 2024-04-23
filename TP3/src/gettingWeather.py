@@ -8,31 +8,26 @@ logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %
 
 appWeather = Flask(__name__)
 
-@appWeather.route('/gettingWeather', methods=['GET'])
+@appWeather.route('/')
 def gettingWeather():
-    APIKEY_openweather = request.args.get('API_KEY')
     lat = request.args.get('lat')
     lon = request.args.get('lon')
+    api_key = os.getenv('API_KEY')
+    dns_name_label = os.getenv('DNS_NAME_LABEL')
 
-    # Logging the request details
-    logging.info(f"The weather for lat = {lat}, lon = {lon}, and API key = {APIKEY_openweather} is requested.")
+    # Check if essential parameters are available
+    if not (lat and lon and api_key and dns_name_label):
+        logging.error("Missing parameters: latitude, longitude, API key, or DNS name label.")
+        return jsonify({"error": "Missing parameters"}), 400
 
-
-    if not (lat and lon):
-        logging.error("Missing latitude or longitude in the request.")
-        return jsonify({"error": "Missing latitude or longitude"}), 400
-
-    full_url = f"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={APIKEY_openweather}"
+    full_url = f"http://{dns_name_label}.francecentral.azurecontainer.io/?lat={lat}&lon={lon}&API_KEY={api_key}"
     response = requests.get(full_url)
 
     if response.status_code == 200:
         data = response.json()
-        weather = data.get('weather', [{}])[0]
-        # Logging the successful retrieval of weather
-        logging.info(f"Weather data retrieved: {weather}")
-        return jsonify(weather)
+        logging.info(f"Weather data retrieved: {data}")
+        return jsonify(data)
     else:
-        # Logging the error with fetching weather data
         logging.error(f"Failed to fetch weather data, status code {response.status_code}.")
         return jsonify({"error": "Failed to fetch weather data"}), response.status_code
 

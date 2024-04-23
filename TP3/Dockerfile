@@ -1,7 +1,7 @@
 FROM python:3.12-alpine
 
 # Setting working dir
-WORKDIR /TP2app
+WORKDIR /TP3app
 
 # Install system dependencies
 RUN apk add --no-cache gcc musl-dev python3-dev libffi-dev openssl-dev
