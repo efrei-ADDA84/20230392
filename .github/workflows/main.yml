@@ -30,7 +30,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: jaoox/tp3-weatherapp:${{ github.run_number }}-latest
+          tags: jaoox/tp3-weatherapp:${{ github.run_number }}
           context: ./TP3
           file: ./TP3/Dockerfile
       
@@ -61,7 +61,7 @@ jobs:
         with:
           resource-group: ${{ secrets.RESOURCE_GROUP }}
           dns-name-label: devops-${{ github.run_number }}
-          image: jaoox/tp3-weatherapp:${{ github.run_number }}-latest  # This must match the exact image path used in the push step
+          image: jaoox/tp3-weatherapp:${{ github.run_number }}
           location: francecentral
           environment-variables: API_KEY=${{ secrets.API_KEY }} DNS_NAME_LABEL=devops-${{ github.run_number }}
           name: aci-devops-${{ github.run_number }}
