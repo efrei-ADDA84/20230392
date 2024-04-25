@@ -1,4 +1,4 @@
-name: CI / CD Pipeline
+name: CI / CD Pipeline TP3
 
 on:
   push:
@@ -58,9 +58,16 @@ jobs:
         uses: Azure/aci-deploy@v1
         with:
           resource-group: ${{ secrets.RESOURCE_GROUP }}
-          dns-name-label: devops-${{ github.run_number }}  
+          dns-name-label: devops-${{ github.run_number }}
           image: ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ env.REPO_OWNER }}/${{ github.run_number }}:latest
           location: francecentral
-          environment-variables: |
-            API_KEY=${{ secrets.API_KEY }}
+          environment-variables: API_KEY=${{ secrets.API_KEY }}
             DNS_NAME_LABEL=devops-${{ github.run_number }}
+          name: aci-devops-${{ github.run_number }}  # The name of the container group
+          cpu: 1
+          ip-address: Public
+          memory: 1.5
+          os-type: Linux
+          ports: 80
+          protocol: TCP
+          restart-policy: Always
